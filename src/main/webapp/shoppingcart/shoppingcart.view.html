@@ -1,0 +1,53 @@
+<div class="container">
+	<!-- Page Header -->
+	<br /> <br />
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Shopping Cart</h1>
+		</div>
+	</div>
+	<!-- Content -->
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<table class="table table-bordered">
+				<!-- header -->
+				<tr class="well">
+					<td><b>Item</b></td>
+					<td class="tdCenter"><b>Quantity</b></td>
+					<td class="tdRight"><b>Price</b></td>
+					<td />
+				</tr>
+				<!-- cart items -->
+				<tr
+					ng-repeat="shoppingCartItem in shoppingCartItems track by $index">
+					<td>{{shoppingCartItem.title}}</td>
+					<td class="tdCenter">
+						<div class="input-append">
+							<!-- use type=tel instead of  to prevent spinners -->
+							<input class="span3 text-center" type="tel" ng-model="quantity"></input>
+							<button class="btn btn-success" type="button">+</button>
+							<button class="btn btn-inverse" type="button">-</button>
+						</div>
+					</td>
+					<td class="tdRight">{{shoppingCartItem.price}}</td>
+					<td class="tdCenter" title="remove from cart"><a href=""><span
+							class="glyphicon glyphicon-remove"></span></a></td>
+				</tr>
+				<tr class="well">
+					<td><b>Total</b></td>
+					<td class="tdCenter"><b>{{getTotalCount()}}</b></td>
+					<td class="tdRight"><b>{{getTotalPrice() | currency}}</b></td>
+					<td />
+				</tr>
+			</table>
+			<div class="row">
+				<div class="col-md-8"></div>
+				<div class="col-md-4">
+					<button class="btn btn-block btn-primary">
+						<span class="glyphicon glyphicon-ok"></span> Check Out
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
