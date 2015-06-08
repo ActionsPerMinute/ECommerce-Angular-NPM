@@ -1,40 +1,44 @@
 package com.appdynamics.rest;
 
-public class JsonResponse {
+public class CartResponse {
 
-	// No Argument Constructor
-	public JsonResponse() {
-	}
+	private String cartSize;
+    private String cartTotal;
 
-	// Argument Constructor
-	public JsonResponse(String key, String value) {
-		super();
-		this.key = key;
-		this.value = value;
-	}
+    /**
+     * No Argument Constructor - Required for creating json object
+     */
+    public CartResponse() {
+    }
 
-	// Private fields
-	private String key;
-	
-	//Getter and Setter of key
-	public String getKey() {
-		return key;
-	}
+    /**
+     * Argument constructor
+     */
+    public CartResponse(String cartSize, String cartTotal) {
+        this.cartSize = cartSize;
+        this.cartTotal = cartTotal;
+    }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	//Getter and Setter of value
-	public String getValue() {
-		return value;
-	}
+    /**
+     * Getter and Setter of cartSize
+     */
+    public String getCartSize() {
+        return cartSize;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setCartSize(String cartSize) {
+        this.cartSize = cartSize;
+    }
 
-	private String value;
+    /**
+     * Getter and Setter of cartTotal
+     */
+    public String getCartTotal() {
+        return cartTotal;
+    }
 
+    public void setCartTotal(String cartTotal) {
+        this.cartTotal = cartTotal;
+    }
 	
 }

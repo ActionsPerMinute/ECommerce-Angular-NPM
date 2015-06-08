@@ -16,7 +16,7 @@
 			return $http(
 					{
 						method : 'GET',
-						url : 'http://localhost:1111/AngularUI/rest/service/getallitems'
+						url : ECommerceApp.Constants.PRODUCTSERVICEURL,
 					}).then(handleSuccess,
 					handleError('Error in loading products. Please try again later.'));
 

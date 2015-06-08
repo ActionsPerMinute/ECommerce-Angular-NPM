@@ -1,15 +1,16 @@
 (function() {
 	'use strict';
 
-	angular.module('app').controller('LoginController',
-			LoginController);
+	angular.module('app').controller('LoginController',LoginController);
 
-	LoginController.$inject = [ '$location', 'AuthenticationService',
-			'FlashService' ];
+	LoginController.$inject = [ '$location', 'AuthenticationService','FlashService' ];
 	function LoginController($location, AuthenticationService, FlashService) {
+		
 		var lc = this;
-
 		lc.login = login;
+		
+		$("#licartsymbol").hide();
+		$("#liuser").hide();
 
 		(function initController() {
 			// reset login status
@@ -18,20 +19,17 @@
 
 		function login() {
 			lc.dataLoading = true;
-			AuthenticationService.Login(lc.username, lc.password, function(
-					response) {
+			AuthenticationService.Login(lc.username, lc.password, function(response) {
 				console.log(response);
 				if (response.success) {
-					AuthenticationService.SetCredentials(lc.username,
-							lc.password);
-					$location.path('/products');
+					AuthenticationService.SetCredentials(lc.username,lc.password);
+					$location.path('/');
 				} else {
 					FlashService.Error(response.message);
 					lc.dataLoading = false;
 				}
 			});
-		}
-		;
+		};
 	}
 
 })();

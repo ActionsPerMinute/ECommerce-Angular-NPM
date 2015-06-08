@@ -1,5 +1,9 @@
 package com.appdynamics.rest;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class CartItem {
 
 	// No Argument Constructor
@@ -7,21 +11,30 @@ public class CartItem {
 	}
 
 	// Argument Constructor
-	public CartItem(String id, String title, String imagePath, String price,String itemid) {
+	public CartItem(String id, String title, String imagePath,String itemId,String price) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.imagePath = imagePath;
+		this.itemId = itemId;
 		this.price = price;
-		this.itemid = itemid;
 	}
 
 	// Private fields
+	@XmlElement(name="id")
 	private String id;
+	
+	@XmlElement(name="title")
 	private String title;
+	
+	@XmlElement(name="imagePath")
 	private String imagePath;
+	
+	@XmlElement(name="itemId")
+	private String itemId;
+	
+	@XmlElement(name="price")
 	private String price;
-	private String itemid;
 
 	public String getId() {
 		return id;
@@ -47,19 +60,19 @@ public class CartItem {
 		this.imagePath = imagePath;
 	}
 
+	public String getItemid() {
+		return itemId;
+	}
+
+	public void setItemid(String itemId) {
+		this.itemId = itemId;
+	}
+	
 	public String getPrice() {
 		return price;
 	}
 
 	public void setPrice(String price) {
 		this.price = price;
-	}
-
-	public String getItemid() {
-		return itemid;
-	}
-
-	public void setItemid(String itemid) {
-		this.itemid = itemid;
 	}
 }

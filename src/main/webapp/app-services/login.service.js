@@ -5,7 +5,7 @@
 
 	UserService.$inject = [ '$http' ];
 	function UserService($http) {
-		var service = {};
+		var service = {};   
 
 		service.ValidateUser = ValidateUser;
 
@@ -21,7 +21,7 @@
 
 			return $http({
 				method : 'POST',
-				url : 'http://localhost:1111/appdynamicspilot/rest/user/login',
+				url : ECommerceApp.Constants.USERSERVICEURL,
 				data : $.param(formData), // pass in data as strings
 				headers : {
 					'Content-Type' : 'application/x-www-form-urlencoded'

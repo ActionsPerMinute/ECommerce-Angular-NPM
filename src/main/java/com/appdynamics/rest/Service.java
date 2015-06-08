@@ -27,7 +27,7 @@ import com.sun.jersey.api.client.WebResource;
 ;
 
 @Path("/service")
-public class service {
+public class Service {
 	String serviceurl = "http://ec2-54-214-49-166.us-west-2.compute.amazonaws.com/appdynamicspilot/";
 
 	@GET
@@ -35,7 +35,7 @@ public class service {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllItems() throws Exception {
 		Gson gson = new Gson();
-		List<Product> lstProd = new ArrayList<>();
+		List<Item> lstProd = new ArrayList<>();
 		try {
 			URL url = new URL(serviceurl + "rest/items/all");
 			URLConnection conn = url.openConnection();
@@ -49,7 +49,7 @@ public class service {
 				Node nNode = nodes.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					lstProd.add(new Product(eElement.getElementsByTagName("id")
+					lstProd.add(new Item(eElement.getElementsByTagName("id")
 							.item(0).getTextContent(), eElement
 							.getElementsByTagName("title").item(0)
 							.getTextContent(), serviceurl
@@ -112,7 +112,7 @@ public class service {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String addItemToCart(@PathParam("id") int id) throws Exception {
 		Gson gson = new Gson();
-		List<JsonResponse> lstJsonResponse = new ArrayList<>();
+		List<CartResponse> lstJsonResponse = new ArrayList<>();
 		try {
 			Client client = Client.create();
 			WebResource wb = client.resource(serviceurl + "rest/cart/" + id);
@@ -124,7 +124,7 @@ public class service {
 					.entrySet()) {
 				for (String value : entry.getValue()) {
 					lstJsonResponse
-							.add(new JsonResponse(entry.getKey(), value));
+							.add(new CartResponse(entry.getKey(), value));
 				}
 			}
 		} catch (Exception e) {

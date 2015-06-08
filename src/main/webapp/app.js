@@ -1,11 +1,8 @@
 (function() {
 	'use strict';
-	// App Module: the name AngularStore matches the ng-app attribute in the
-	// main
-	// <html> tag
-	// the route provides parses the URL and injects the appropriate partial
-	// page
-	angular.module('app', [ 'ngRoute', 'ngCookies' ]).config(config).run(run);
+	// App Module: the name AngularStore matches the ng-app attribute in the main <html> tag
+	// the route provides parses the URL and injects the appropriate partial page
+	angular.module('app', [ 'ngRoute', 'ngCookies' ]).config(config).run(run).service('sharedProperties',sharedProperties);
 	config.$inject = [ '$routeProvider', '$locationProvider' ];
 	function config($routeProvider, $locationProvider) {
 		$routeProvider.when('/login', {
@@ -21,8 +18,15 @@
 		})
 
 		.when('/cart', {
-			controller : ShoppingCartController,
-			templateUrl : 'shoppingcart/shoppingcart.view.html'
+			controller : 'ShoppingCartController',
+			templateUrl : 'shoppingcart/shoppingcart.view.html',
+			controllerAs : 'sc'
+		})
+		
+		.when('/checkout', {
+			controller : 'CheckoutController',
+			templateUrl : 'checkout/checkout.view.html',
+			controllerAs : 'cc'
 		})
 
 		.otherwise({
@@ -42,10 +46,8 @@
 
 		$rootScope.$on('$locationChangeStart',
 				function(event, next, current) {
-					// redirect to login page if not logged in and trying to
-					// access a restricted page
-					var restrictedPage = $.inArray($location.path(),
-							[ '/login' ]) === -1;
+					// redirect to login page if not logged in and trying to access a restricted page
+					var restrictedPage = $.inArray($location.path(), [ '/login' ]) === -1;
 					var loggedIn = $rootScope.globals.currentUser;
 					if (restrictedPage && !loggedIn) {
 						$location.path('/login');
@@ -54,5 +56,18 @@
 		$rootScope.navigatetocart = function(path) {
 			$location.path(path);
 		};
+	}
+	
+	function sharedProperties() {
+		var hashtable = {};
+
+		 return {
+		        setValue: function (key, value) {
+		            hashtable[key] = value;
+		        },
+		        getValue: function (key) {
+		            return hashtable[key];
+		        }
+		    };
 	}
 })();

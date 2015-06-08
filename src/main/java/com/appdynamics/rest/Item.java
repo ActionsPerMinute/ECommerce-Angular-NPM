@@ -1,14 +1,14 @@
 package com.appdynamics.rest;
 
 //Product Class
-public class Product {
+public class Item {
  
 	//No Argument Constructor
-	public Product() {
+	public Item() {
 	}
 	
 	//Argument Constructor
-	public Product(String id, String title, String imagePath, String price) {
+	public Item(String id, String title, String imagePath, String price) {
 		super();
 		this.id = id;
 		this.title = title;
