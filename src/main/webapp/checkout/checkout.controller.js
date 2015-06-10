@@ -26,5 +26,6 @@
 		if(sharedProperties.getValue("checkoutmessage") != null && sharedProperties.getValue("checkoutmessage") != undefined){
 			cc.checkoutmessage = sharedProperties.getValue("checkoutmessage");
 		}
+		sharedProperties.setValue("cartItems",null);
 	}
 })();

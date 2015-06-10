@@ -20,7 +20,7 @@
             $rootScope.$on('$locationChangeStart', function () {
                 clearFlashMessage();
             });
-
+            
             function clearFlashMessage() {
                 var flash = $rootScope.flash;
                 if (flash) {

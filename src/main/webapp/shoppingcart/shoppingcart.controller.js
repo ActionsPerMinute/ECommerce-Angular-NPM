@@ -29,74 +29,101 @@
 		
 		//Checkout item from cart
 		sc.CheckOut = function() {
-			console.log("CheckOutItemsFromCart click");
+			sharedProperties.setValue("checkoutmessage",null);
 			sc.dataLoading = true;
 			CheckoutService.CheckOutItemsFromCart(sc.user).then(function(items) {
-				console.log("CheckOutItemsFromCart");
-				console.log(items);
 				if (items != null && items.success != null && !items.success) {
 					FlashService.Error(items.message);
 					sc.dataLoading = false;
 				} else if (items != null && items.data != null) {
+					$rootScope.flash = null;
 					sharedProperties.setValue("checkoutmessage",items.data);
 					$location.path('/checkout');
 				}
 			});
 		}
 		
-		CartService.getCartItems(sc.user).then(function(cartItems) {
-			console.log("getCartItems");
-			console.log(cartItems);
-			if (cartItems != null && cartItems.success != null && !cartItems.success) {
-				FlashService.Error(cartItems.message);
-				$('#divCartContent').hide();
-			 } else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
-					
-				UpdateCartInformation(cartItems.data);
-				sc.cartItems = cartItems.data;
-				sc.quantity = 1;
-					
-				// get the total price for all items currently in the cart
-				sc.getTotalPrice = function() {
-					var total = 0;
-					for (var i = 0; i < sc.cartItems.length; i++) {
-						var item = sc.cartItems[i];
-						if(item != null && item != 'undefined'){
-							total += parseFloat(item.price, 10);
+		//Get cart items
+		var spCartItems = sharedProperties.getValue("cartItems");
+		if(spCartItems != null && spCartItems != undefined){
+			sc.cartItems = spCartItems;
+			UpdateCartInformation(spCartItems);
+			UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+		}else{
+			CartService.getCartItems(sc.user).then(function(cartItems) {
+				if (cartItems != null && cartItems.success != null && !cartItems.success) {
+					FlashService.Error(cartItems.message);
+					$('#divCartContent').hide();
+				 } else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
+					 $rootScope.flash = null;
+					 sharedProperties.setValue("cartItems",cartItems.data)
+					 sc.cartItems = cartItems.data;
+					UpdateCartInformation(cartItems.data);
+					UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+				 }	else{
+						FlashService.Error("Your cart is empty.Please add items to your chart");
+						$('#divCartContent').hide();
+				 }
+			});
+		}
+	}
+	
+	function UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location){
+		var spCartItems = sharedProperties.getValue("cartItems");
+		sc.quantity = 1;
+			
+		// get the total price for all items currently in the cart
+		sc.getTotalPrice = function() {
+			var total = 0;
+			for (var i = 0; i < sc.cartItems.length; i++) {
+				var item = sc.cartItems[i];
+				if(item != null && item != 'undefined'){
+					total += parseFloat(item.price, 10);
+				}
+			}
+			return total;
+		}
+			
+		// get the total quantity of all items currently in the cart
+		sc.getTotalCount = function() {
+			return sc.cartItems.length;
+		}
+			
+		//Removes item from cart
+		sc.RemoveFromCart = function(cartItems,cartItem, index) {
+			console.log(cartItems,cartItem,index);
+			CartService.removeItemFromCart(sc.user,cartItem.id).then(function(items) {
+			if (items != null && items.success != null && !items.success) {
+				FlashService.Error(items.message);
+			} else if (items != null && items.data != null) {
+					if (items.data.indexOf("Deleted item id") == -1) {
+						FlashService.Error(items.data);
+					} else {
+						$rootScope.flash = null;
+						var value = parseInt($("#cartCount").text(), 10) - 1;
+						if(value != 0){
+							$("#cartCount").text(value);
+						} else {
+							$("#cartCount").text('');
+							FlashService.Error("Your cart is empty.Please add items to your chart");
+							$('#divCartContent').hide();
+						}
+						cartItems.splice(index, 1);
+						if(spCartItems != null && spCartItems != undefined){
+							findAndRemove(spCartItems,"id",cartItem.id);
 						}
 					}
-					return total;
-				}
-					
-				// get the total quantity of all items currently in the cart
-				sc.getTotalCount = function() {
-					return sc.cartItems.length;
-				}
-					
-				//Removes item from cart
-				sc.RemoveFromCart = function(cartItems,cartItem, index) {
-					CartService.removeItemFromCart(sc.user,cartItem.itemId).then(function(items) {
-					console.log("RemoveFromCart");
-					console.log(items);
-					if (items != null && items.success != null && !items.success) {
-						FlashService.Error(items.message);
-					} else if (items != null && items.data != null) {
-							if (items.data.indexOf("Deleted item id") == -1) {
-								FlashService.Error(items.data);
-							} else {
-								var value = parseInt($("#cartCount").text(), 10) - 1;
-								$("#cartCount").text(value);
-								cartItems.splice(index, 1);;
-							}
-						}
-					});
-				  }
-					
-				}
-				else{
-					FlashService.Error("Your cart is empty.Please add items to your chart");
-					$('#divCartContent').hide();
 				}
 			});
+		  }
 	}
+	
+	function findAndRemove(array, property, value) {
+		   $.each(array, function(index, result) {
+		      if(result[property] == value) {
+		          //Remove from array
+		          array.splice(index, 1);
+		      }    
+		   });
+		}
 })();

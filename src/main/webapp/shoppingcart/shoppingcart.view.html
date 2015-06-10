@@ -24,9 +24,9 @@
 						<div class="input-append">
 							<!-- use type=tel instead of  to prevent spinners -->
 							<input class="span3 text-center" type="tel"
-								ng-model="sc.quantity"></input>
-							<button class="btn btn-success" type="button">+</button>
-							<button class="btn btn-inverse" type="button">-</button>
+								ng-model="sc.quantity" ng-disabled="true"></input>
+							<button style="display:none" class="btn btn-success" type="button">+</button>
+							<button  style="display:none" class="btn btn-inverse" type="button">-</button>
 						</div>
 					</td>
 					<td class="tdRight">{{cartItem.price}}</td>

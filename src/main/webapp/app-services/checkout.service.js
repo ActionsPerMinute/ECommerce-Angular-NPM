@@ -33,7 +33,7 @@
 				return function() {
 					return {
 						success : false,
-						data : error
+						message : error
 					};
 				};
 			}
