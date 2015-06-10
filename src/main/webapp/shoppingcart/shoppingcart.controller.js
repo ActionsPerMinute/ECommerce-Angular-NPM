@@ -24,7 +24,7 @@
 		function ShowHideControls() {
 			$("#licartsymbol").show();
 			$("#liuser").show();
-			$('#divCartContent').show();
+			$('#divCheckOut').show();
 		}
 		
 		//Checkout item from cart
@@ -45,26 +45,30 @@
 		
 		//Get cart items
 		var spCartItems = sharedProperties.getValue("cartItems");
-		if(spCartItems != null && spCartItems != undefined){
-			sc.cartItems = spCartItems;
-			UpdateCartInformation(spCartItems);
-			UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
-		}else{
-			CartService.getCartItems(sc.user).then(function(cartItems) {
-				if (cartItems != null && cartItems.success != null && !cartItems.success) {
-					FlashService.Error(cartItems.message);
-					$('#divCartContent').hide();
-				 } else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
-					 $rootScope.flash = null;
-					 sharedProperties.setValue("cartItems",cartItems.data)
-					 sc.cartItems = cartItems.data;
-					UpdateCartInformation(cartItems.data);
-					UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
-				 }	else{
-						FlashService.Error("Your cart is empty.Please add items to your chart");
-						$('#divCartContent').hide();
-				 }
-			});
+		if($("#cartCount").text() != '' && $("#cartCount").text != '0'){
+			if(spCartItems != null && spCartItems != undefined){
+				sc.cartItems = spCartItems;
+				UpdateCartInformation(spCartItems);
+				UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+			}else{
+				CartService.getCartItems(sc.user).then(function(cartItems) {
+					if (cartItems != null && cartItems.success != null && !cartItems.success) {
+						FlashService.Error(cartItems.message);
+					 } else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
+						 $rootScope.flash = null;
+						 sharedProperties.setValue("cartItems",cartItems.data)
+						 sc.cartItems = cartItems.data;
+						UpdateCartInformation(cartItems.data);
+						UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+					 }	else{
+							FlashService.Error("Your shopping cart is empty.Please add items to your chart");
+							$('#divCheckOut').hide();
+					 }
+				});
+			}
+		} else {
+			FlashService.Error("Your shopping cart is empty.Please add items to your chart");
+			$('#divCheckOut').hide();
 		}
 	}
 	
@@ -77,7 +81,7 @@
 			var total = 0;
 			for (var i = 0; i < sc.cartItems.length; i++) {
 				var item = sc.cartItems[i];
-				if(item != null && item != 'undefined'){
+				if(item != null && item != undefined){
 					total += parseFloat(item.price, 10);
 				}
 			}
@@ -91,7 +95,6 @@
 			
 		//Removes item from cart
 		sc.RemoveFromCart = function(cartItems,cartItem, index) {
-			console.log(cartItems,cartItem,index);
 			CartService.removeItemFromCart(sc.user,cartItem.id).then(function(items) {
 			if (items != null && items.success != null && !items.success) {
 				FlashService.Error(items.message);
@@ -100,13 +103,13 @@
 						FlashService.Error(items.data);
 					} else {
 						$rootScope.flash = null;
+						FlashService.Success(cartItem.title + "  was removed from your shopping cart.");
 						var value = parseInt($("#cartCount").text(), 10) - 1;
 						if(value != 0){
 							$("#cartCount").text(value);
 						} else {
 							$("#cartCount").text('');
-							FlashService.Error("Your cart is empty.Please add items to your chart");
-							$('#divCartContent').hide();
+							$("#divCheckOut").hide();
 						}
 						cartItems.splice(index, 1);
 						if(spCartItems != null && spCartItems != undefined){

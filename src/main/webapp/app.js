@@ -54,7 +54,15 @@
 					}
 				});
 		$rootScope.navigatetocart = function(path) {
-			$location.path(path);
+			if($("#cartCount").text() != '' && $("#cartCount").text != '0'){
+				$location.path(path);
+			} else {
+				$rootScope.flash = {
+		                message: 'Your shopping cart is empty. Please add items to your cart',
+		                type: false,
+		                keepAfterLocationChange: true
+		         };
+			}
 		};
 	}
 	
