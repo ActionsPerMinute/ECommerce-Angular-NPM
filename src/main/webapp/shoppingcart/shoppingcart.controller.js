@@ -22,6 +22,7 @@
 		}
 		
 		function ShowHideControls() {
+			$rootScope.flash = null;
 			$("#licartsymbol").show();
 			$("#liuser").show();
 			$('#divCheckOut').show();
@@ -37,7 +38,6 @@
 					FlashService.Error(items.message);
 					sc.dataLoading = false;
 				} else if (items != null && items.data != null) {
-					$rootScope.flash = null;
 					sharedProperties.setValue("checkoutmessage",items.data);
 					$location.path('/checkout');
 				}
@@ -46,30 +46,24 @@
 		
 		//Get cart items
 		var spCartItems = sharedProperties.getValue("cartItems");
-		if($("#cartCount").text() != '' && $("#cartCount").text != '0'){
-			if(spCartItems != null && spCartItems != undefined){
-				sc.cartItems = spCartItems;
-				UpdateCartInformation(spCartItems);
-				UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
-			}else{
-				CartService.getCartItems(sc.user).then(function(cartItems) {
-					if (cartItems != null && cartItems.success != null && !cartItems.success) {
-						FlashService.Error(cartItems.message);
-					 } else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
-						 $rootScope.flash = null;
-						 sharedProperties.setValue("cartItems",cartItems.data)
-						 sc.cartItems = cartItems.data;
-						UpdateCartInformation(cartItems.data);
-						UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
-					 }	else{
-							FlashService.Error("Your shopping cart is empty.Please add items to your chart");
-							$('#divCheckOut').hide();
-					 }
-				});
-			}
-		} else {
-			FlashService.Error("Your shopping cart is empty.Please add items to your chart");
-			$('#divCheckOut').hide();
+		if(spCartItems != 'undefined' && spCartItems != null){
+			sc.cartItems = spCartItems;
+			UpdateCartInformation(spCartItems);
+			UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+		}else{
+			CartService.getCartItems(sc.user).then(function(cartItems) {
+				if (cartItems != null && cartItems.success != null && !cartItems.success) {
+					FlashService.Error(cartItems.message);
+				} else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
+					sharedProperties.setValue("cartItems",cartItems.data)
+					sc.cartItems = cartItems.data;
+					UpdateCartInformation(cartItems.data);
+					UpdateCartTable(sc,UserService, CartService,CheckoutService,sharedProperties,FlashService, $rootScope,$location);
+				}	else{
+					FlashService.Error("Your shopping cart is empty.Please add items to your chart");
+					$('#divCheckOut').hide();
+				}
+			});
 		}
 	}
 	
@@ -103,8 +97,7 @@
 					if (items.data.indexOf("Deleted item id") == -1) {
 						FlashService.Error(items.data);
 					} else {
-						$rootScope.flash = null;
-						FlashService.Success(cartItem.title + "  was removed from your shopping cart.");
+						FlashService.Success("'" + cartItem.title + "'  was removed from your shopping cart.");
 						var value = parseInt($("#cartCount").text(), 10) - 1;
 						if(value != 0){
 							$("#cartCount").text(value);
@@ -113,7 +106,7 @@
 							$("#divCheckOut").hide();
 						}
 						cartItems.splice(index, 1);
-						if(spCartItems != null && spCartItems != undefined){
+						if(spCartItems != 'undefined' && spCartItems != null){
 							findAndRemove(spCartItems,"id",cartItem.id);
 						}
 					}

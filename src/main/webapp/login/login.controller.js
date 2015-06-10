@@ -8,14 +8,14 @@
 		
 		var lc = this;
 		lc.login = login;
-		
-		$("#licartsymbol").hide();
-		$("#liuser").hide();
-		$("#lihome").hide();
 
 		(function initController() {
 			// reset login status
 			AuthenticationService.ClearCredentials();
+			$rootScope.flash = null;
+			$("#licartsymbol").hide();
+			$("#liuser").hide();
+			$("#lihome").hide();
 		})();
 
 		function login() {
@@ -23,7 +23,6 @@
 			AuthenticationService.Login(lc.username, lc.password, function(response) {
 				if (response.success) {
 					AuthenticationService.SetCredentials(lc.username,lc.password);
-					$rootScope.flash = null;
 					$location.path('/');
 				} else {
 					FlashService.Error(response.message);

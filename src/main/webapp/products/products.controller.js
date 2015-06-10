@@ -3,11 +3,11 @@
 
 	angular.module('app').controller('ProductsController', ProductsController);
 	
-	ProductsController.$inject = [ 'UserService', 'ProductService','CartService','sharedProperties','FlashService', '$rootScope' ];
-
-	function ProductsController(UserService, ProductService, CartService,sharedProperties,FlashService,$rootScope) {
+	ProductsController.$inject = [ 'UserService', 'ProductService','CartService','sharedProperties','FlashService', '$rootScope' ,'superCache'];
+	function ProductsController(UserService, ProductService, CartService,sharedProperties,FlashService,$rootScope,superCache) {
 		var pc = this;
 		pc.user = null;
+		
 		
 		pc.serviceurl = ECommerceApp.Constants.SERVICEURL;
 		initController();
@@ -21,6 +21,7 @@
 		}
 		
 		function ShowHideControls() {
+			$rootScope.flash = null;
 			$("#licartsymbol").show();
 			$("#liuser").show();
 			$("#lihome").hide();
@@ -28,14 +29,13 @@
 		
 		//Get cart items
 		var spCartItems = sharedProperties.getValue("cartItems");
-		if(spCartItems != null && spCartItems != undefined){
+		if(spCartItems != 'undefined' && spCartItems != null){
 			UpdateCartInformation(spCartItems);
 		}else{
 			CartService.getCartItems(pc.user).then(function(cartItems) {
 				if (cartItems != null && cartItems.success != null && !cartItems.success) {
 					FlashService.Error(cartItems.message);
 				} else if (cartItems != null && cartItems.data != null && cartItems.data.length > 0) {
-					$rootScope.flash = null;
 					sharedProperties.setValue("cartItems",cartItems.data)
 					UpdateCartInformation(cartItems.data);
 				}
@@ -43,20 +43,24 @@
 		}
 		
 		//Get all items
-		ProductService.GetAllItems().then(function(items) {
-			if (items != null && items.success != null && !items.success) {
-				FlashService.Error(items.message);
-			} else if (items != null && items.data != null) {
-				$rootScope.flash = null;
-				pc.items = items.data;
-			}
-		});
+		if(superCache.put("products") != 'undefined' && superCache.get("products") != null){
+			pc.items = superCache.get("products");
+		} else {
+			ProductService.GetAllItems().then(function(items) {
+				if (items != null && items.success != null && !items.success) {
+					FlashService.Error(items.message);
+				} else if (items != null && items.data != null) {
+					pc.items = items.data;
+					superCache.put("products", pc.items);
+				}
+			});
+		}
 		
 		//Add to Cart
 		pc.AddToCart = function(product, $event) {
 			var addtocart = true;
 			var spCartItems = sharedProperties.getValue("cartItems");
-			if(spCartItems!= null && spCartItems != undefined){
+			if(spCartItems != 'undefined' && spCartItems != null){
 				$.each(spCartItems, function(key,value) {
 				 if(value.id == product.id)
 					 addtocart = false;
@@ -69,7 +73,6 @@
 						FlashService.Error(items.message);
 					} else if (items != null && items.data != null && parseInt(items.data.cartSize) > 0) {
 						// Add the cart count
-						$rootScope.flash = null;
 						if (!$("#cartCount").text() || 0 === $("#cartCount").text().length){
 							$("#cartCount").text(1);
 						} else {
@@ -92,7 +95,7 @@
 				});
 				
 			} else{
-				FlashService.Error("' " + product.title + " ' has already been added to the cart. Please try adding other items to the cart.");
+				FlashService.Error("'" + product.title + "' has already been added to the cart. Please try adding other items to the cart.");
 			}
 			
 		};

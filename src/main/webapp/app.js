@@ -2,7 +2,7 @@
 	'use strict';
 	// App Module: the name AngularStore matches the ng-app attribute in the main <html> tag
 	// the route provides parses the URL and injects the appropriate partial page
-	angular.module('app', [ 'ngRoute', 'ngCookies' ]).config(config).run(run).service('sharedProperties',sharedProperties);
+	angular.module('app', [ 'ngRoute', 'ngCookies' ]).config(config).run(run).service('sharedProperties',sharedProperties).factory('superCache',superCache);
 	config.$inject = [ '$routeProvider', '$locationProvider' ];
 	function config($routeProvider, $locationProvider) {
 		$routeProvider.when('/login', {
@@ -34,8 +34,8 @@
 		});
 	}
 
-	run.$inject = [ '$rootScope', '$location', '$cookieStore', '$http' ];
-	function run($rootScope, $location, $cookieStore, $http) {
+	run.$inject = [ '$rootScope', '$location', '$cookieStore', '$http','superCache' ];
+	function run($rootScope, $location, $cookieStore, $http,superCache) {
 
 		// keep user logged in after page refresh
 		$rootScope.globals = $cookieStore.get('globals') || {};
@@ -64,6 +64,11 @@
 		         };
 			}
 		};
+		
+		$rootScope.logout = function(path){
+			superCache.removeAll();
+			$location.path(path);
+		}
 	}
 	
 	function sharedProperties() {
@@ -77,5 +82,10 @@
 		            return hashtable[key];
 		        }
 		    };
+	}
+	
+	superCache.$inject = [ '$cacheFactory' ];
+	function superCache($cacheFactory){
+		 return $cacheFactory('super-cache');
 	}
 })();
