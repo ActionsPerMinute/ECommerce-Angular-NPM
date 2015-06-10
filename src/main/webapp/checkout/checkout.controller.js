@@ -22,6 +22,7 @@
 		function ShowHideControls() {
 			$("#licartsymbol").hide();
 			$("#liuser").show();
+			$("#lihome").show();
 		}
 		if(sharedProperties.getValue("checkoutmessage") != null && sharedProperties.getValue("checkoutmessage") != undefined){
 			cc.checkoutmessage = sharedProperties.getValue("checkoutmessage");

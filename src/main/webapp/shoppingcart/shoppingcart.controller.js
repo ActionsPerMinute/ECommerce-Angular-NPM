@@ -25,6 +25,7 @@
 			$("#licartsymbol").show();
 			$("#liuser").show();
 			$('#divCheckOut').show();
+			$("#lihome").show();
 		}
 		
 		//Checkout item from cart

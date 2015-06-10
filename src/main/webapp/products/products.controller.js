@@ -23,6 +23,7 @@
 		function ShowHideControls() {
 			$("#licartsymbol").show();
 			$("#liuser").show();
+			$("#lihome").hide();
 		}
 		
 		//Get cart items

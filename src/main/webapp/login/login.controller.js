@@ -11,6 +11,7 @@
 		
 		$("#licartsymbol").hide();
 		$("#liuser").hide();
+		$("#lihome").hide();
 
 		(function initController() {
 			// reset login status
