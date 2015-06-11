@@ -1,6 +1,7 @@
 package com.appdynamics.rest;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -29,14 +30,13 @@ import com.sun.jersey.api.json.JSONConfiguration;
 
 @Path("/service/json")
 public class Service_Json {
-	String serviceurl = "http://localhost:1111/appdynamicspilot/rest/json/";
 
 	@GET
 	@Path("/getallitems")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllItems() throws Exception {
-		URL url = new URL(serviceurl + "items/all");
+		URL url = new URL(GetConfigFiles() + "items/all");
 		try {
 			URLConnection conn = url.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -63,7 +63,7 @@ public class Service_Json {
 				Boolean.TRUE);
 		try {
 			List<CartItem> response = Client.create(clientConfig)
-					.resource(serviceurl + "cart/all")
+					.resource(GetConfigFiles()  + "cart/all")
 					.accept(MediaType.APPLICATION_JSON)
 					.header("username", req.getHeader("username"))
 					.get(new GenericType<List<CartItem>>() {
@@ -87,7 +87,7 @@ public class Service_Json {
 				Boolean.TRUE);
 		try {
 			CartResponse response = Client.create(clientConfig)
-					.resource(serviceurl + "cart/" + id)
+					.resource(GetConfigFiles()  + "cart/" + id)
 					.accept(MediaType.APPLICATION_JSON)
 					.header("username", req.getHeader("username"))
 					.get(new GenericType<CartResponse>() {
@@ -110,7 +110,7 @@ public class Service_Json {
 				Boolean.TRUE);
 		try {
 			ClientResponse response = Client.create(clientConfig)
-					.resource(serviceurl + "cart/" + id)
+					.resource(GetConfigFiles()  + "cart/" + id)
 					.header("username", req.getHeader("username"))
 					.delete(ClientResponse.class);
 			return response.getEntity(String.class);
@@ -131,7 +131,7 @@ public class Service_Json {
 				Boolean.TRUE);
 		try {
 			ClientResponse response = Client.create(clientConfig)
-					.resource(serviceurl + "cart/co")
+					.resource(GetConfigFiles()  + "cart/co")
 					.header("username", req.getHeader("username"))
 					.get(ClientResponse.class);
 			return response.getEntity(String.class);
@@ -140,5 +140,16 @@ public class Service_Json {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+	
+	private String GetConfigFiles(){
+		CrunchifyGetPropertyValues properties = new CrunchifyGetPropertyValues();
+		try {
+			return properties.getrestv2Values();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -1,5 +1,6 @@
 package com.appdynamics.rest;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -28,8 +29,6 @@ import com.sun.jersey.api.client.WebResource;
 
 @Path("/service")
 public class Service {
-	String serviceurl = "http://ec2-54-214-49-166.us-west-2.compute.amazonaws.com/appdynamicspilot/";
-
 	@GET
 	@Path("/getallitems")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +36,7 @@ public class Service {
 		Gson gson = new Gson();
 		List<Item> lstProd = new ArrayList<>();
 		try {
-			URL url = new URL(serviceurl + "rest/items/all");
+			URL url = new URL(GetConfigFiles() + "items/all");
 			URLConnection conn = url.openConnection();
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory
@@ -52,8 +51,8 @@ public class Service {
 					lstProd.add(new Item(eElement.getElementsByTagName("id")
 							.item(0).getTextContent(), eElement
 							.getElementsByTagName("title").item(0)
-							.getTextContent(), serviceurl
-							+ eElement.getElementsByTagName("imagePath")
+							.getTextContent(),
+							eElement.getElementsByTagName("imagePath")
 									.item(0).getTextContent(), eElement
 							.getElementsByTagName("price").item(0)
 							.getTextContent()));
@@ -74,7 +73,7 @@ public class Service {
 		Gson gson = new Gson();
 		List<CartItem> lstCartItem = new ArrayList<>();
 		try {
-			URL url = new URL(serviceurl + "rest/cart/all");
+			URL url = new URL(GetConfigFiles() + "cart/all");
 			URLConnection conn = url.openConnection();
 
 			DocumentBuilderFactory factory = DocumentBuilderFactory
@@ -90,8 +89,8 @@ public class Service {
 							.getElementsByTagName("id").item(0)
 							.getTextContent(), eElement
 							.getElementsByTagName("title").item(0)
-							.getTextContent(), serviceurl
-							+ eElement.getElementsByTagName("imagePath")
+							.getTextContent(),
+							eElement.getElementsByTagName("imagePath")
 									.item(0).getTextContent(), eElement
 							.getElementsByTagName("price").item(0)
 							.getTextContent(), eElement
@@ -115,7 +114,7 @@ public class Service {
 		List<CartResponse> lstJsonResponse = new ArrayList<>();
 		try {
 			Client client = Client.create();
-			WebResource wb = client.resource(serviceurl + "rest/cart/" + id);
+			WebResource wb = client.resource(GetConfigFiles() + "cart/" + id);
 			ClientResponse response = wb.header("username", "test").get(
 					ClientResponse.class);
 
@@ -141,7 +140,7 @@ public class Service {
 	public String CheckOutItemsFromCart() throws Exception {
 		try {
 			Client client = Client.create();
-			WebResource wb = client.resource(serviceurl + "rest/cart/co");
+			WebResource wb = client.resource(GetConfigFiles() + "cart/co");
 			ClientResponse response = wb.header("username", "test").get(
 					ClientResponse.class);
 			return response.getEntity(String.class);
@@ -151,5 +150,16 @@ public class Service {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+	
+	private String GetConfigFiles(){
+		CrunchifyGetPropertyValues properties = new CrunchifyGetPropertyValues();
+		try {
+			return properties.getrestv1Values();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
