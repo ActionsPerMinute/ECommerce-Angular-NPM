@@ -34,7 +34,7 @@ var ECommerceApp;
 									 messageResource.get('ui', 'config'));
 							Constants.USERSERVICEURL = createConstant(
 									"USERSERVICEURL",
-									 messageResource.get('ui', 'config') + 'rest/user/login');
+									 messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/login');
 							Constants.PRODUCTSERVICEURL = createConstant(
 									"PRODUCTSERVICEURL",
 									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/getallitems');

@@ -12,7 +12,7 @@
 		return service;
 
 		function ValidateUser(usr, pwd) {
-
+			
 			// get the form data
 			var formData = {
 				'username' : usr,
