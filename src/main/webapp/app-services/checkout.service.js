@@ -22,7 +22,7 @@
 			})
 					.then(
 							handleSuccess,
-							handleError('Error in checking out. Please try again later.'));
+							handleError('Error while checking out. Please try again later.'));
 
 			// private functions
 			function handleSuccess(data) {

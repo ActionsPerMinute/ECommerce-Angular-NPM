@@ -23,7 +23,7 @@
 							   'username': usrname
 							 }
 					}).then(handleSuccess,
-					handleError('Error in loading Cart Items. Please try again later.'));
+					handleError('Error while loading Cart Items. Please try again later.'));
 
 			// private functions
 			function handleSuccess(data) {

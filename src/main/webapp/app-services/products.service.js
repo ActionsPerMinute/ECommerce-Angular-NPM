@@ -18,7 +18,7 @@
 						method : 'GET',
 						url : ECommerceApp.Constants.PRODUCTSERVICEURL,
 					}).then(handleSuccess,
-					handleError('Error in loading products. Please try again later.'));
+					handleError('Error while loading products. Please try again later.'));
 
 			// private functions
 			function handleSuccess(data) {
