@@ -28,7 +28,7 @@
 				}
 			// set the headers so angular passing info as form data (not request
 			// payload)
-			}).then(handleSuccess, handleError('Username or Password is incorrect'));
+			}).then(handleSuccess, handleError('Error in logging in. Please try again later.'));
 			
 			// private functions
 
