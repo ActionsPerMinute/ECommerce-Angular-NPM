@@ -34,22 +34,22 @@ var ECommerceApp;
 									 messageResource.get('ui', 'config'));
 							Constants.USERSERVICEURL = createConstant(
 									"USERSERVICEURL",
-									 messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/login');
+									 messageResource.get('hostname', 'config') + 'rest/service/json/login');
 							Constants.PRODUCTSERVICEURL = createConstant(
 									"PRODUCTSERVICEURL",
-									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/getallitems');
+									messageResource.get('hostname', 'config') + 'rest/service/json/getallitems');
 							Constants.CARTSERVICEGETITEMSURL = createConstant(
 									"CARTSERVICEGETITEMSURL",
-									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/getcartitems');
+									messageResource.get('hostname', 'config') + 'rest/service/json/getcartitems');
 							Constants.CARTSERVICEADDITEMSURL = createConstant(
 									"CARTSERVICEADDITEMSURL",
-									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/additemtocart');
+									messageResource.get('hostname', 'config') + 'rest/service/json/additemtocart');
 							Constants.CARTSERVICEREMOVEITEMSURL = createConstant(
 									"CARTSERVICEREMOVEITEMSURL",
-									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/removeitemfromcart');
+									messageResource.get('hostname', 'config') + 'rest/service/json/removeitemfromcart');
 							Constants.CHECKOUTSERVICEURL = createConstant(
 									"CHECKOUTSERVICEURL",
-									messageResource.get('hostname', 'config') + 'AngularUI/rest/service/json/checkout');
+									messageResource.get('hostname', 'config') + 'rest/service/json/checkout');
 						});
 
 		ECommerceApp.Constants = Constants;
