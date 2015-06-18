@@ -3,13 +3,13 @@
 
 	angular.module('app').controller('ProductsController', ProductsController);
 	
-	ProductsController.$inject = [ 'UserService', 'ProductService','CartService','sharedProperties','FlashService', '$rootScope' ,'superCache'];
-	function ProductsController(UserService, ProductService, CartService,sharedProperties,FlashService,$rootScope,superCache) {
+	ProductsController.$inject = ['$location', 'UserService', 'ProductService','CartService','sharedProperties','FlashService', '$rootScope' ,'superCache'];
+	function ProductsController($location,UserService, ProductService, CartService,sharedProperties,FlashService,$rootScope,superCache) {
 		var pc = this;
 		pc.user = null;
 		
 		
-		pc.serviceurl = ECommerceApp.Constants.SERVICEURL;
+		pc.serviceurl = 'http://' + $location.host() + '/' + ECommerceApp.Constants.SERVICEURL;
 		initController();
 
 		function initController() {
