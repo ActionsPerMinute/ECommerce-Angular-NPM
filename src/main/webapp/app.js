@@ -5,6 +5,7 @@
 	angular.module('app', [ 'ngRoute', 'ngCookies' ]).config(config).run(run).service('sharedProperties',sharedProperties).factory('superCache',superCache);
 	config.$inject = [ '$routeProvider', '$locationProvider' ];
 	function config($routeProvider, $locationProvider) {
+		
 		$routeProvider.when('/login', {
 			controller : 'LoginController',
 			templateUrl : 'login/login.view.html',
