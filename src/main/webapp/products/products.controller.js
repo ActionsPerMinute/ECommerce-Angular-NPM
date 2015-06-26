@@ -9,7 +9,7 @@
 		pc.user = null;
 		
 		
-		pc.serviceurl = 'http://' + $location.host() + '/' + ECommerceApp.Constants.SERVICEURL;
+		pc.serviceurl = 'http://' + $location.host()  + '/' + ECommerceApp.Constants.SERVICEURL;
 		initController();
 
 		function initController() {

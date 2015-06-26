@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.appdynamics.rest</groupId>
-	<artifactId>angular</artifactId>
+	<artifactId>AngularUI</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
