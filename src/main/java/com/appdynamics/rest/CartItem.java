@@ -23,16 +23,16 @@ public class CartItem {
 	// Private fields
 	@XmlElement(name="id")
 	private String id;
-	
+
 	@XmlElement(name="title")
 	private String title;
-	
+
 	@XmlElement(name="imagePath")
 	private String imagePath;
-	
+
 	@XmlElement(name="itemId")
 	private String itemId;
-	
+
 	@XmlElement(name="price")
 	private String price;
 
