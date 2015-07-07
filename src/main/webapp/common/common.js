@@ -4,7 +4,7 @@ function UpdateCartInformation(cartItems){
 				$("#cartCount").text(cartItems.length);
 				ChangeCartSymbolColor();
 		} else{
-			$("#cartCount").text();
+			$("#cartCount").text('');
 		}
 	};
 	
