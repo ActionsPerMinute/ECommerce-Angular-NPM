@@ -3,6 +3,8 @@ function UpdateCartInformation(cartItems){
 			// Add the cart count
 				$("#cartCount").text(cartItems.length);
 				ChangeCartSymbolColor();
+		} else{
+			$("#cartCount").text();
 		}
 	};
 	
