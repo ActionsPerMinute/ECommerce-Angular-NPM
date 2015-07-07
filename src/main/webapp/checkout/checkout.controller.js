@@ -25,6 +25,7 @@
 			$("#lihome").show();
 		}
 		if(sharedProperties.getValue("checkoutmessage") != null && sharedProperties.getValue("checkoutmessage") != undefined){
+			sharedProperties.setValue("cartItems",null);
 			cc.checkoutmessage = sharedProperties.getValue("checkoutmessage");
 		}
 		sharedProperties.setValue("cartItems",null);
